@@ -1,0 +1,59 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no, viewport-fit=cover">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+<meta name="apple-mobile-web-app-title" content="のりもの">
+<title>のりもの おしごと</title>
+<link rel="stylesheet" href="css/app.css">
+</head>
+<body>
+
+<section id="home" class="screen">
+  <div class="hot" aria-hidden="true"></div>
+  <main id="grid"></main>
+</section>
+
+<section id="game" class="screen" hidden>
+  <div id="stage"></div>
+  <button id="homeBtn" class="home-btn" aria-label="ホームにもどる（長押し）">🏠</button>
+</section>
+
+<section id="end" class="screen" hidden>
+  <div class="hot" aria-hidden="true"></div>
+  <div class="end-box">
+    <div class="wave">👋</div>
+    <div class="end-title">おしまい</div>
+    <div class="end-sub">また あそぼうね</div>
+  </div>
+</section>
+
+<div id="parent" class="modal" hidden>
+  <div class="sheet">
+    <h2>おうちの人メニュー</h2>
+    <p class="muted" id="playedText"></p>
+    <div class="row">
+      <span>あそぶ時間</span>
+      <div class="seg" data-key="limitMin">
+        <button data-v="10">10分</button><button data-v="20">20分</button><button data-v="30">30分</button><button data-v="0">なし</button>
+      </div>
+    </div>
+    <div class="row">
+      <span>音の大きさ</span>
+      <div class="seg" data-key="volume">
+        <button data-v="0.4">小</button><button data-v="0.7">中</button><button data-v="1">大</button>
+      </div>
+    </div>
+    <div class="actions">
+      <button id="resetTime">時間をリセット</button>
+      <button id="closeParent" class="primary">とじる</button>
+    </div>
+  </div>
+</div>
+
+<script type="module" src="js/main.js"></script>
+</body>
+</html>
