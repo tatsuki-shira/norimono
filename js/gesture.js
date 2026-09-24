@@ -78,7 +78,8 @@ export function createInput(svg, { onAny, onMiss, sfx } = {}) {
 
     // item を targets（{x, y} の配列、または配列を返す関数）のどれかに置いたら解決する
     // 近くで離せば吸い付き、遠ければ元の場所に戻る
-    dragOnce(item, targets, { pad = 40, snap = 160, onSnap } = {}) {
+    // 吸い付かずに戻るときは onReturn(item) を呼ぶ
+    dragOnce(item, targets, { pad = 40, snap = 160, onSnap, onReturn } = {}) {
       return new Promise(res => {
         let dx = 0, dy = 0, s0 = item.s;
         const rm = add({
@@ -105,6 +106,7 @@ export function createInput(svg, { onAny, onMiss, sfx } = {}) {
               tween(180, t => item.set(lerp(x0, best.x, t), lerp(y0, best.y, t)), ease.out).then(() => res(best));
             } else {
               sfx?.boing();
+              onReturn?.(item);
               tween(450, t => item.set(lerp(x0, item.homeX, t), lerp(y0, item.homeY, t)), ease.back);
             }
           },

@@ -160,6 +160,22 @@ export const sfx = {
     n.connect(bp).connect(g).connect(master);
     n.start(t); n.stop(t + dur);
   }),
+  // カンカンカン（踏切）
+  crossing: on((t, dur = 6) => {
+    for (let s = t; s < t + dur; s += 0.5) {
+      tone(s, 740, 0.4, { type: "triangle", vol: 0.3 });
+      tone(s, 1110, 0.25, { vol: 0.1 });
+    }
+  }),
+  // ガタンゴトン（鉄橋）
+  clatter: on((t, dur = 3) => {
+    for (let s = t; s < t + dur; s += 0.9) {
+      [0, 0.14, 0.45, 0.59].forEach(d => {
+        noise(s + d, 0.12, { type: "lowpass", freq: 500, vol: 0.5 });
+        tone(s + d, 110, 0.12, { type: "triangle", vol: 0.25, to: 70 });
+      });
+    }
+  }),
   // ピーポーピーポー
   ambulance: on((t, dur = 3) => {
     const bus = soundBus(t, dur), o = ctx.createOscillator(), g = ctx.createGain();

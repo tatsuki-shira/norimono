@@ -52,6 +52,27 @@ export function wait(ms) {
   return new Promise(res => setTimeout(() => { if (s.alive) res(); }, ms));
 }
 
+export const clamp01 = v => Math.max(0, Math.min(1, v));
+
+export function shuffle(arr) {
+  const a = [...arr];
+  for (let i = a.length - 1; i > 0; i--) {
+    const j = Math.floor(Math.random() * (i + 1));
+    [a[i], a[j]] = [a[j], a[i]];
+  }
+  return a;
+}
+
+// 白くフェードして、fn() で場面を入れ替える
+export async function fadeSwap(svg, fn, ms = 400) {
+  const cover = h("rect", { x: -1000, y: -1000, width: 3000, height: 3000, fill: "#fff", opacity: 0 }, svg);
+  await tween(ms, t => cover.setAttribute("opacity", t));
+  fn();
+  svg.appendChild(cover); // 新しい場面より手前に
+  await tween(ms, t => cover.setAttribute("opacity", 1 - t));
+  cover.remove();
+}
+
 /* ---------- ヒント ---------- */
 // 値が関数なら呼ぶ（動くものの場所を毎回取り直すため）
 const pt = v => (typeof v === "function" ? v() : v);
@@ -74,6 +95,7 @@ export async function hand(svg, hint) {
   const put = (x, y) => el.setAttribute("transform", `translate(${x + 8} ${y + 100})`);
   if (hint.tap) {
     const p = pt(hint.tap);
+    if (!p) { el.remove(); return; }
     ring(svg, p.x, p.y);
     for (let i = 0; i < 2; i++) {
       await tween(280, t => put(p.x, p.y + 30 * (1 - t)), ease.out);

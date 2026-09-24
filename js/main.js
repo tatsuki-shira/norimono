@@ -1,6 +1,7 @@
 // 画面の切り替え、ホーム、親メニュー、時間制限
 import * as audio from "./audio.js";
 import * as fx from "./fx.js";
+import { SHARED_DEFS } from "./art.js";
 import { createInput } from "./gesture.js";
 import depart from "./games/depart.js";
 import track from "./games/track.js";
@@ -15,12 +16,15 @@ const $ = s => document.querySelector(s);
 const screens = { home: $("#home"), game: $("#game"), end: $("#end") };
 const stage = $("#stage");
 
+// 光と影のグラデーション（どの絵からも url(#g-...) で使う）
+document.body.insertAdjacentHTML("afterbegin", SHARED_DEFS);
+
 /* ---------- 設定（localStorage） ---------- */
 const store = {
   get(k, d) { try { const v = localStorage.getItem(k); return v == null ? d : JSON.parse(v); } catch { return d; } },
   set(k, v) { try { localStorage.setItem(k, JSON.stringify(v)); } catch {} },
 };
-const settings = { limitMin: store.get("limitMin", 20), volume: store.get("volume", 0.7) };
+const settings = { limitMin: store.get("limitMin", 0), volume: store.get("volume", 0.7) };
 audio.setVolume(settings.volume);
 
 let playStart = store.get("playStart", 0);
